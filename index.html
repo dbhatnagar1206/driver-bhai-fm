@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111018">
+<title>UNSENT — Say it. Don't send it.</title>
+<style>
+:root{--bg:#0d0c12;--card:#17151f;--line:#2b2835;--text:#f5f1f7;--muted:#aaa4b2;--accent:#d9a7c9;--accent2:#a88bc4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#292033 0,#100e15 42%,#09080c 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:760px;min-height:100vh;margin:auto;padding:28px 16px 40px}.brand{text-align:center;padding:24px 0 18px}.brand small{letter-spacing:4px;color:var(--muted)}h1{font-size:48px;letter-spacing:7px;margin:12px 0 8px}.tag{font-size:16px;color:#c8c2ce}.card{background:rgba(23,21,31,.88);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.35);backdrop-filter:blur(12px)}
+.hero{text-align:center;padding:8px 4px 22px}.hero h2{font-size:25px;margin:8px 0}.hero p{color:var(--muted);line-height:1.55;margin:0 auto 18px;max-width:560px}.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}.chip{border:1px solid var(--line);background:#111016;color:#ddd7e2;padding:10px 13px;border-radius:999px;cursor:pointer}.chip:hover{border-color:#6f6278}
+.mode{display:flex;gap:10px;margin:12px 0}.mode button{flex:1}.active{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;color:#17131b!important;border-color:transparent!important}
+textarea{width:100%;min-height:180px;resize:vertical;border:1px solid var(--line);background:#0f0e14;color:var(--text);border-radius:18px;padding:16px;font:inherit;outline:none}textarea:focus{border-color:#75627c}button{border:1px solid var(--line);background:#201d28;color:var(--text);border-radius:14px;padding:12px 15px;font-weight:650;cursor:pointer}.send{width:100%;margin-top:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#17131b;border:0;padding:14px}.chat{display:flex;flex-direction:column;gap:12px;margin:18px 0}.msg{max-width:88%;padding:13px 15px;border-radius:17px;line-height:1.55;white-space:pre-wrap}.ai{background:#211d29;border:1px solid #302b38;align-self:flex-start}.you{background:#d9a7c9;color:#17131b;align-self:flex-end}.note{text-align:center;color:#817b88;font-size:11px;line-height:1.5;margin-top:18px}.hidden{display:none}.typing{color:#aaa;font-size:13px;padding:5px}.footer{text-align:center;color:#6f6a76;font-size:11px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <small>A QUIET PLACE FOR LOUD FEELINGS</small>
+    <h1>UNSENT</h1>
+    <div class="tag">Say it. Don't send it.</div>
+  </header>
+
+  <section class="card">
+    <div class="hero">
+      <h2>You don't have to pretend you're okay.</h2>
+      <p>Tell your story here. No followers. No likes. No judgement. Just a place to put the words you couldn't say.</p>
+      <div class="chips">
+        <button class="chip" onclick="pick('I just want someone to listen.')">🫂 Just listen</button>
+        <button class="chip" onclick="pick('I need help understanding what happened.')">💭 Help me understand</button>
+        <button class="chip" onclick="pick('I want to write what I could not say to them.')">✍️ Write it out</button>
+        <button class="chip" onclick="pick('I want help moving forward.')">🌱 Help me move forward</button>
+      </div>
+    </div>
+
+    <div class="mode">
+      <button id="listen" class="active" onclick="setMode('listen')">🫂 Just listen</button>
+      <button id="advice" onclick="setMode('advice')">💡 Advice</button>
+    </div>
+
+    <div id="chat" class="chat">
+      <div class="msg ai">I'm here. You don't have to make your story sound perfect. Start wherever you want.</div>
+    </div>
+
+    <textarea id="box" placeholder="Tell me what happened..."></textarea>
+    <button class="send" onclick="sendMessage()">Send →</button>
+    <div class="note">For privacy, don't share passwords, addresses, phone numbers, or other highly sensitive information. UNSENT is not a therapist or emergency service.</div>
+  </section>
+  <div class="footer">UNSENT • Your story belongs to you.</div>
+</div>
+
+<script>
+let mode='listen';
+function setMode(m){mode=m;document.getElementById('listen').classList.toggle('active',m==='listen');document.getElementById('advice').classList.toggle('active',m==='advice')}
+function pick(t){document.getElementById('box').value=t;document.getElementById('box').focus()}
+function add(text,who){const d=document.createElement('div');d.className='msg '+who;d.textContent=text;document.getElementById('chat').appendChild(d);d.scrollIntoView({behavior:'smooth',block:'center'})}
+function sendMessage(){
+ const b=document.getElementById('box'), t=b.value.trim(); if(!t)return;
+ add(t,'you'); b.value='';
+ // Local demo response. The AI backend will replace this function in the next step.
+ setTimeout(()=> {
+   const reply=mode==='listen'
+   ? "I'm listening. That sounds like something you've been carrying for a while. You don't have to solve it right now. What part of this hurts the most?"
+   : "I hear you. Before deciding what to do next, it may help to separate what you feel from what you know. If you want, tell me what happened and I'll help you look at it without judging either of you.";
+   add(reply,'ai');
+ },450);
+}
+</script>
+</body>
+</html>
